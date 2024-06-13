@@ -535,13 +535,12 @@ public class Menu extends javax.swing.JFrame {
 
     // AÇÃO DO BOTÃO DE CADASTRAR
     private void cButtonActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        // TODO add your handling code here:
         try {
             // Coletando os dados do formulário
-            String dataStr = cTextData.getText();
-            String horarioStr = cTextHorario.getText();
+            String dataStr = cTextData.getText().trim();
+            String horarioStr = cTextHorario.getText().trim();
             String medicoStr = (String) cSelectMedico.getSelectedItem();
-            String cpfPacienteStr = cTextPaciente.getText();
+            String cpfPacienteStr = cTextPaciente.getText().trim();
 
             // Convertendo os dados para os tipos apropriados
             LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -604,11 +603,12 @@ public class Menu extends javax.swing.JFrame {
     }
 
     private void aButtonActionPerformed(java.awt.event.ActionEvent evt) { 
+        try {
             // Coletando os dados do formulário
-            String dataStr = cTextData.getText();
-            String horarioStr = cTextHorario.getText();
+            String dataStr = cTextData.getText().trim();
+            String horarioStr = cTextHorario.getText().trim();
             String medicoStr = (String) cSelectMedico.getSelectedItem();
-            String cpfPacienteStr = cTextPaciente.getText();
+            String cpfPacienteStr = cTextPaciente.getText().trim();
 
             // Convertendo os dados para os tipos apropriados
             LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -616,6 +616,20 @@ public class Menu extends javax.swing.JFrame {
  
             int cod_medico = Medico.getCodigoMedicoPorNome(medicos, medicoStr);
 
+            // Atualizando o objeto Consulta
+            update_consulta = Consulta.getAtualizarConsulta(int cod_medico, String cpfPacienteStr, LocalDate data, LocalTime horario);
+            
+            if update_consulta {
+                Consulta.salvarListaDeConsultas(consultas);
+                JOptionPane.showMessageDialog(this, "Consulta atualizada com sucesso!");
+            }
+            else {JOptionPane.showMessageDialog(this, "Consulta não encontrada, verifique os dados digitados!", "Erro", JOptionPane.ERROR_MESSAGE);}
+
+        //} catch (update_consulta == false) {
+                //JOptionPane.showMessageDialog(this, "Consulta não encontrada, verifique os dados digitados!", "Erro", JOptionPane.ERROR_MESSAGE);              
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar consultas: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
