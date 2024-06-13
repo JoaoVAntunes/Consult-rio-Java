@@ -1,13 +1,15 @@
-package readers;
+package readers.readersCSV;
 
+import entities.*;
 import java.io.*;
 import java.util.*;
 
-import entities.*;
-
 public class DadosCSVReaderMedico {
 	public static List<Medico> lerMedicosDoCSV(List<Paciente> pacientes) {
-		String caminho_arquivo = "C:\\Users\\joaov_er3oeo2\\OneDrive - Grupo Marista\\Nova pasta\\Desktop\\Workspace\\ProjetoJava\\informacoes\\medicos.csv";
+		// String caminho_arquivo = "C:\\Users\\joaov_er3oeo2\\OneDrive - Grupo Marista\\Nova pasta\\Desktop\\Workspace\\ProjetoJava\\informacoes\\medicos.csv";
+		// String caminho_arquivo = "C:\\Users\\Samsung\\OneDrive - Grupo Marista\\3º Período\\Programação Orientada a Objetos\\Trabalho RA3\\Consult-rio-Java-POO-3\\informacoes\\medicos.csv";
+		String caminho_arquivo = "informacoes/medicos.csv";
+
 
 		Map<Integer, Medico> mapaMedicos = new HashMap<>();
 			

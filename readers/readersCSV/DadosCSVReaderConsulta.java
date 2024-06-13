@@ -1,18 +1,19 @@
-package readers;
+package readers.readersCSV;
 
+import entities.Consulta;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-import entities.Consulta;
-
 public class DadosCSVReaderConsulta {
 	public static List<Consulta> lerConsultasDoCSV() {
         
-		String caminho_arquivo = "C:\\Users\\joaov_er3oeo2\\OneDrive - Grupo Marista\\Nova pasta\\Desktop\\Workspace\\ProjetoJava\\informacoes\\consultas.csv";
-		
+		// String caminho_arquivo = "C:\\Users\\joaov_er3oeo2\\OneDrive - Grupo Marista\\Nova pasta\\Desktop\\Workspace\\java\\ProjetoJava\\informacoes\\consultas.csv";
+		// String caminho_arquivo = "C:\\Users\\Samsung\\OneDrive - Grupo Marista\\3º Período\\Programação Orientada a Objetos\\Trabalho RA3\\Consult-rio-Java-POO-3\\informacoes\\consultas.csv";
+		String caminho_arquivo = "informacoes/consultas.csv";
+
 		List<Consulta> consultas = new ArrayList<Consulta>();
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(caminho_arquivo), "UTF-8"))) {
 			

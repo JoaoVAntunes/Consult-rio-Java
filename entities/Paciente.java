@@ -1,12 +1,16 @@
 package entities;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import readers.DadosCSVReaderConsulta;
-import readers.DadosCSVReaderPaciente;
+import readers.readersCSV.DadosCSVReaderConsulta;
+import readers.readersCSV.DadosCSVReaderPaciente;
 
 
 public class Paciente implements Serializable{
@@ -112,4 +116,38 @@ public class Paciente implements Serializable{
         return false; // Paciente não está inativo há mais de 'mesesInatividade' meses
     }
 
+     // Method to read a list of consultations from a file
+     @SuppressWarnings("unchecked")
+    public static List<Paciente> abrirPacientes() throws IOException, ClassNotFoundException {
+        List<Paciente> pacientes = null;
+        FileInputStream arquivo = new FileInputStream("pacientes.bin");
+        ObjectInputStream restaurador = new ObjectInputStream(arquivo);
+
+        pacientes = (List<Paciente>)restaurador.readObject();
+        
+        restaurador.close();
+        arquivo.close();
+        
+        return pacientes;
+    }
+
+    public static void salvarListaDePacientes(List<Paciente> paciente) throws IOException, Exception{
+
+        FileOutputStream arquivo = new FileOutputStream("pacientes.bin");
+        ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
+        gravador.writeObject(paciente);
+        
+        gravador.close();
+        arquivo.close();
+    }
+
+    public static String getPacienteNomePorCPF(List<Paciente> pacientes, String cpf) {
+
+        for (Paciente paciente : pacientes) {
+            if (paciente.getCpf().equals(cpf)) {
+                return paciente.getNome();
+            }
+        }
+        return "Paciente não encontrado";
+    }
 }

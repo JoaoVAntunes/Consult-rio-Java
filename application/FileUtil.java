@@ -7,7 +7,6 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class FileUtil {
-
     public static void writeLinesToFile(List<String> lines, String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"))) {
             for (String line : lines) {
