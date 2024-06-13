@@ -82,14 +82,14 @@ public class Consulta implements Serializable{
     }
 
     // Função para buscar a consulta de acordo com os campos inseridos e atualizar caso encontre a consulta
-    public static void getAtualizarConsulta(List<Consulta> consultas, int cod_medico, String cpfPaciente, LocalDate data, LocalTime horario) {
+    public static Boolean getAtualizarConsulta(List<Consulta> consultas, int cod_medico, String cpfPaciente, LocalDate data, LocalTime horario) throws Exception{
         //LocalDate dataAtual = LocalDate.now();
 
         String cpf;
         int codigo;
         LocalDate data_consulta;
         LocalTime horario_consulta;
-
+        boolean result = false;
 
         for (Consulta consulta : consultas) {
 
@@ -104,8 +104,10 @@ public class Consulta implements Serializable{
                 && horario_consulta == horario) 
                 {
                 consulta.setConsulta(cod_medico, cpfPaciente, data, horario);
+                result = true;
                 }
         }
+        return result;
     }
     
     public static void salvarListaDeConsultas(List<Consulta> consultas) throws IOException, Exception{
