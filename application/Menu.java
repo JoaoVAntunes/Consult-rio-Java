@@ -636,7 +636,11 @@ public class Menu extends javax.swing.JFrame {
             // Atualizando o objeto Consulta
             boolean update_consulta = Consulta.getAtualizarConsulta(consultas, cod_medico, cpfPacienteStr, data, horario);
             
+<<<<<<< HEAD
             if(update_consulta){
+=======
+            if (update_consulta) {
+>>>>>>> 1b5350d682d2b7fe06b0d26df7a08a278b7994fd
                 Consulta.salvarListaDeConsultas(consultas);
                 JOptionPane.showMessageDialog(this, "Consulta atualizada com sucesso!");
             }
@@ -648,6 +652,7 @@ public class Menu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao atualizar consultas: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     /**
      * @param args the command line arguments
