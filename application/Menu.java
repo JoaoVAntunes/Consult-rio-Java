@@ -42,8 +42,10 @@ public class Menu extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) pTable.getModel();
         model.setRowCount(0); // Limpa a tabela antes de adicionar os novos dados
 
+        DateTimeFormatter formatoBrasileiro = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         for (Consulta consulta : consultas) {
-            String data = consulta.getData().toString();
+            String data = consulta.getData().format(formatoBrasileiro);
             String horario = consulta.getHorario().toString();
             String medicoNome = Medico.getNomeMedicoPorCodigo(medicos, consulta.getMedico());
             String pacienteNome = Paciente.getPacienteNomePorCPF(pacientes, consulta.getCpfPaciente());
@@ -146,7 +148,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Heiti TC", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(242, 242, 242));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel6.setText("                 Data (DD-MM-AAAA)");
+        jLabel6.setText("                 Data (AAAA-MM-DD)");
 
         jLabel7.setFont(new java.awt.Font("Heiti TC", 0, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(242, 242, 242));
@@ -292,7 +294,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Heiti TC", 0, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(242, 242, 242));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel11.setText("                 Data (DD-MM-AAAA)");
+        jLabel11.setText("                 Data (AAAA-MM-DD)");
 
         jLabel12.setFont(new java.awt.Font("Heiti TC", 0, 24)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(242, 242, 242));
@@ -582,9 +584,25 @@ public class Menu extends javax.swing.JFrame {
         }
 
         try {
-            // Realiza a conversão de String para LocalDate e armazena na variável "data"
-            LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+             // Formato da data brasileira (DD-MM-AAAA)
+            DateTimeFormatter formatoBrasileiro = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            // Formato da data internacional (AAAA-MM-DD)
+            DateTimeFormatter formatoInternacional = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+            LocalDate data;
+            
+            // Verifica se a data está no formato internacional
+            if (dataStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                // Se estiver no formato internacional, apenas parse a data
+                data = LocalDate.parse(dataStr, formatoInternacional);
+            } else if (dataStr.matches("\\d{2}-\\d{2}-\\d{4}")) {
+                // Se estiver no formato brasileiro, converta para o formato internacional
+                data = LocalDate.parse(dataStr, formatoBrasileiro);
+                dataStr = data.format(formatoInternacional); // Atualiza a string para o formato internacional
+            } else {
+                throw new DateTimeParseException("Formato de data inválido", dataStr, 0);
+            }
+            
             // Salva na lista "consultasFiltradas" as consultas daquela determinada data
             List<Consulta> consultasFiltradas = Consulta.getConsultasPorData(consultas, data);
 
@@ -598,10 +616,9 @@ public class Menu extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar consultas: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-        
-
     }
 
+    // AÇÃO DO BOTÃO DE ATUALIZAR
     private void aButtonActionPerformed(java.awt.event.ActionEvent evt) { 
         try {
             // Coletando os dados do formulário
@@ -617,9 +634,9 @@ public class Menu extends javax.swing.JFrame {
             int cod_medico = Medico.getCodigoMedicoPorNome(medicos, medicoStr);
 
             // Atualizando o objeto Consulta
-            update_consulta = Consulta.getAtualizarConsulta(int cod_medico, String cpfPacienteStr, LocalDate data, LocalTime horario);
+            boolean update_consulta = Consulta.getAtualizarConsulta(consultas, cod_medico, cpfPacienteStr, data, horario);
             
-            if update_consulta {
+            if(update_consulta){
                 Consulta.salvarListaDeConsultas(consultas);
                 JOptionPane.showMessageDialog(this, "Consulta atualizada com sucesso!");
             }
